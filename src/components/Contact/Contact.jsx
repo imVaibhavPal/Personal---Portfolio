@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import { personalInfo } from '../../data/portfolioData';
 import { FiMail, FiMapPin, FiGithub, FiLinkedin, FiSend, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import './Contact.css';
@@ -36,45 +35,58 @@ const contactLinks = [
     },
 ];
 
+// FormSubmit.co — zero signup required, delivers directly to your inbox
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/vkpal8300@gmail.com';
+
 const Contact = () => {
     const ref = useRef(null);
-    const formRef = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-    const [formState, setFormState] = useState({ from_name: '', from_email: '', subject: '', message: '' });
+    const [formState, setFormState] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
     const [status, setStatus] = useState('idle'); // idle | sending | success | error
 
     const handleChange = (e) => {
-        setFormState({ ...formState, [e.target.name]: e.target.value });
+        setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('sending');
 
-        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-        // If EmailJS keys are not configured yet, fall back to mailto
-        if (!serviceId || serviceId === 'your_service_id') {
-            const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(formState.subject || 'Portfolio Contact')}&body=${encodeURIComponent(`Name: ${formState.from_name}\nEmail: ${formState.from_email}\n\n${formState.message}`)}`;
-            window.open(mailtoLink, '_self');
-            setStatus('success');
-            setTimeout(() => setStatus('idle'), 4000);
-            return;
-        }
-
         try {
-            await emailjs.sendForm(serviceId, templateId, formRef.current, { publicKey });
-            setStatus('success');
-            setFormState({ from_name: '', from_email: '', subject: '', message: '' });
-            setTimeout(() => setStatus('idle'), 5000);
-        } catch (err) {
-            console.error('EmailJS error:', err);
+            const res = await fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formState.name,
+                    email: formState.email,
+                    subject: formState.subject || 'Portfolio Contact',
+                    message: formState.message,
+                    _subject: `[Portfolio] ${formState.subject || 'New message from ' + formState.name}`,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (data.success === 'true' || data.success === true) {
+                setStatus('success');
+                setFormState({ name: '', email: '', subject: '', message: '' });
+            } else {
+                setStatus('error');
+            }
+        } catch {
             setStatus('error');
-            setTimeout(() => setStatus('idle'), 5000);
         }
+
+        setTimeout(() => setStatus('idle'), 6000);
     };
 
     return (
@@ -95,7 +107,7 @@ const Contact = () => {
                     </p>
 
                     <div className="contact__grid">
-                        {/* Left: info */}
+                        {/* Left: info links */}
                         <motion.div
                             className="contact__info"
                             initial={{ opacity: 0, x: -30 }}
@@ -122,7 +134,10 @@ const Contact = () => {
                                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                                         transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
                                     >
-                                        <div className="contact__link-icon" style={{ color: link.color, background: `${link.color}15` }}>
+                                        <div
+                                            className="contact__link-icon"
+                                            style={{ color: link.color, background: `${link.color}15` }}
+                                        >
                                             {link.icon}
                                         </div>
                                         <div>
@@ -141,7 +156,7 @@ const Contact = () => {
                             animate={isInView ? { opacity: 1, x: 0 } : {}}
                             transition={{ delay: 0.3, duration: 0.6 }}
                         >
-                            <form ref={formRef} className="contact__form glass-card" onSubmit={handleSubmit}>
+                            <form className="contact__form glass-card" onSubmit={handleSubmit}>
                                 <h3 className="contact__form-title">Send a Message</h3>
 
                                 <div className="contact__form-row">
@@ -149,10 +164,10 @@ const Contact = () => {
                                         <label htmlFor="contact-name">Your Name</label>
                                         <input
                                             id="contact-name"
-                                            name="from_name"
+                                            name="name"
                                             type="text"
                                             placeholder="John Doe"
-                                            value={formState.from_name}
+                                            value={formState.name}
                                             onChange={handleChange}
                                             required
                                             disabled={status === 'sending'}
@@ -162,10 +177,10 @@ const Contact = () => {
                                         <label htmlFor="contact-email">Your Email</label>
                                         <input
                                             id="contact-email"
-                                            name="from_email"
+                                            name="email"
                                             type="email"
                                             placeholder="john@example.com"
-                                            value={formState.from_email}
+                                            value={formState.email}
                                             onChange={handleChange}
                                             required
                                             disabled={status === 'sending'}
@@ -200,17 +215,17 @@ const Contact = () => {
                                     />
                                 </div>
 
-                                {/* Status banner */}
+                                {/* Status banners */}
                                 {status === 'success' && (
                                     <div className="contact__status contact__status--success">
                                         <FiCheckCircle size={18} />
-                                        Message sent! I'll get back to you soon.
+                                        Message sent! I'll get back to you soon. 🎉
                                     </div>
                                 )}
                                 {status === 'error' && (
                                     <div className="contact__status contact__status--error">
                                         <FiAlertCircle size={18} />
-                                        Something went wrong. Please email me directly.
+                                        Something went wrong. Please email me directly at vkpal8300@gmail.com
                                     </div>
                                 )}
 
