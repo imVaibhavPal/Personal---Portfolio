@@ -1,0 +1,190 @@
+.experience {
+    position: relative;
+    z-index: 1;
+}
+
+.experience__label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    letter-spacing: 2px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.experience__timeline {
+    position: relative;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.experience__timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent-purple), var(--accent-cyan), transparent);
+}
+
+/* Experience card */
+.exp-card {
+    padding: 32px;
+    position: relative;
+}
+
+.exp-card__dot {
+    position: absolute;
+    left: -27px;
+    top: 36px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);
+    box-shadow: 0 0 12px currentColor;
+}
+
+.exp-card__dot--seeking {
+    background: #10b981;
+    box-shadow: 0 0 12px #10b981;
+}
+
+/* Header */
+.exp-card__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.exp-card__icon-wrap {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.exp-card__icon {
+    font-size: 1.4rem;
+}
+
+.exp-card__meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.exp-card__role {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.exp-card__company {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.exp-card__type {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.exp-card__period {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.exp-card__badge {
+    padding: 4px 12px;
+    border: 1px solid;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+}
+
+/* Highlights */
+.exp-card__highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.exp-card__highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.exp-card__check {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 1rem;
+}
+
+/* Techs */
+.exp-card__techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Seeking card */
+.exp-card--seeking {
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.exp-seeking {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.exp-seeking__icon {
+    font-size: 2rem;
+}
+
+.exp-seeking h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.exp-seeking p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+    .exp-card {
+        padding: 24px;
+    }
+
+    .exp-card__header {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

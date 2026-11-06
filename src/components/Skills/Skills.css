@@ -1,0 +1,121 @@
+.skills {
+    position: relative;
+    z-index: 1;
+}
+
+.skills__label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    letter-spacing: 2px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+/* Tabs */
+.skills__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.skills__tab {
+    padding: 10px 22px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 50px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-mono);
+}
+
+.skills__tab:hover {
+    border-color: var(--accent-purple);
+    color: var(--text-primary);
+}
+
+.skills__tab--active {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-violet));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Grid */
+.skills__grid {
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px 40px;
+    margin-bottom: 40px;
+}
+
+/* Skill bar */
+.skill-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skill-bar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-bar__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.skill-bar__level {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.skill-bar__track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.skill-bar__fill {
+    height: 100%;
+    border-radius: 3px;
+    position: relative;
+}
+
+.skill-bar__fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+/* Cloud */
+.skills__cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .skills__grid {
+        padding: 24px;
+        grid-template-columns: 1fr;
+    }
+}
